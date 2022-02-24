@@ -1,12 +1,7 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://sprite/death_6.png" type="Texture" id=1]
-[ext_resource path="res://sprite/death_4.png" type="Texture" id=2]
-[ext_resource path="res://sprite/death_5.png" type="Texture" id=3]
-[ext_resource path="res://sprite/death_2.png" type="Texture" id=4]
 [ext_resource path="res://sprite/walk-0.png" type="Texture" id=5]
-[ext_resource path="res://sprite/death_3.png" type="Texture" id=6]
-[ext_resource path="res://sprite/death_1.png" type="Texture" id=7]
 [ext_resource path="res://Enemy.gd" type="Script" id=8]
 [ext_resource path="res://sprite/walk-1.png" type="Texture" id=9]
 
@@ -17,17 +12,23 @@ animations = [ {
 "name": "walk",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 7 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 1 ) ],
+"frames": [ ExtResource( 1 ) ],
 "loop": true,
 "name": "death",
 "speed": 12.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 16.25, 5 )
+extents = Vector2( 25.5, 5 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 31.5, 14 )
+extents = Vector2( 27.5, 4 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 10, 6.25 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 13, 6.5 )
 
 [node name="Enemy" type="KinematicBody2D"]
 script = ExtResource( 8 )
@@ -40,25 +41,33 @@ centered = false
 [node name="Top_checker" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Top_checker"]
-position = Vector2( 28, 28 )
+position = Vector2( 32.5, 28 )
 shape = SubResource( 3 )
 
 [node name="Timer" type="Timer" parent="."]
 process_mode = 0
-wait_time = 0.2
+wait_time = 0.001
 one_shot = true
 
 [node name="Stick" type="RayCast2D" parent="."]
 position = Vector2( 29, 34 )
 enabled = true
 
-[node name="hitbox" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
-position = Vector2( 32.5, 51 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 37.5, 61 )
 shape = SubResource( 4 )
+
+[node name="Hit zone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hit zone"]
+position = Vector2( 13, 46 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hit zone"]
+position = Vector2( 48, 46 )
+shape = SubResource( 6 )
 
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="body_entered" from="Top_checker" to="." method="_on_Top_checker_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="Hit zone" to="." method="_on_Hit_zone_body_entered"]
